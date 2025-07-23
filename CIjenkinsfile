@@ -63,14 +63,14 @@ pipeline {
 				"branchName": "main"
 				}""")
 			}     
-		}*/
+		}
 
 
 		stage('Sonar Scan') {
 			steps {
 				sonarSummaries()
 			}
-		}
+		}*/
 
 
 		/*stage('Veracode Security Scan') {
