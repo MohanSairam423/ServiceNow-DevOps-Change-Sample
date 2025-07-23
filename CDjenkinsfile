@@ -13,7 +13,7 @@ pipeline {
 
 	stages {
 	
-		stage('Register Package') {
+		/*stage('Register Package') {
 			steps {
 				echo "RR params.BUILD_NUMBER -> ${params.BUILD_NUMBER}"
 				echo "RR version -> ${version}"
@@ -35,13 +35,13 @@ pipeline {
 					    "branchName": "main"
 				}""")
 			}
-		}
+		}*/
   
 		stage('Change') {
 			steps {
-			    sleep(60);
+			    //sleep(60);
 			    snDevOpsChange(
-				configurationName: "DevOps-checkmarx05.service-now.com-1720680378716",
+				configurationName: "DevOps-nandiniy12.service-now.com-1753255603593",
 				changeRequestDetails: '''
 			    {
 			    "attributes": {
