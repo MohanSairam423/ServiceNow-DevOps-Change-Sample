@@ -1,10 +1,8 @@
 def artifactname = "app-devops-artifact-ci.jar"
 def version = "1.${BUILD_NUMBER}"
 def semanticVersion = "1.${BUILD_NUMBER}.0"
-def repoName = "pramaraju96/ServiceNow-DevOps-Change-Sample" // Ensure after forking update the repoName accrodingly.
-def releasePipelineName = "DevOps CD Pipeline" //Ensure you enter the correct release pipeline name that you have created in Jenkins
-
-def packageName = "app-devops-package-ci.war"
+def repoName = "MohanSairam423/ServiceNow-DevOps-Change-Sample" // Ensure after forking update the repoName accrodingly.
+def releasePipelineName = "CDJenkins" //Ensure you enter the correct release pipeline name that you have created in Jenkins
 
 pipeline {
 	agent any
@@ -15,7 +13,7 @@ pipeline {
 
 	environment {
 		SCANNER_HOME = tool 'sonarScanner'
-		VERACODE_APPLICATION_NAME = 'VeraDemo10' //Ensure you update the correct Application name
+		VERACODE_APPLICATION_NAME = 'PetStoreAPI-Github' //Ensure you update the correct Application name
 		VERACODE_SCANNER_NAME = 'Veracode'
 	} 
 
@@ -30,11 +28,6 @@ pipeline {
 			steps {
 			  	sh 'mvn test'
 				sleep(5);
-				/*
-				catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-					sh "exit 1"
-				}
-				*/
 			}
 			post {
 				always {
@@ -43,13 +36,9 @@ pipeline {
 			}
 		}
 
-		/*stage('Register Artifact') {
+		stage('Register Artifact') {
 			steps {
-				echo "RR version -> ${version}"
-				echo "RR semanticVersion -> ${semanticVersion}"
-				snDevOpsArtifact(
-				configurationName: "DevOps-checkmarx05.service-now.com-1720680378716",
-				artifactsPayload: """
+				snDevOpsArtifact(artifactsPayload: """
 				{
 				"artifacts":
 				[
@@ -65,66 +54,28 @@ pipeline {
 			}     
 		}
 
-
+		
 		stage('Sonar Scan') {
 			steps {
 				sonarSummaries()
 			}
-		}*/
+		}
 
-
-		/*stage('Veracode Security Scan') {
+		stage('Security Scan') {
 			steps {
-				snDevOpsSecurityResult securityResultAttributes: '{"scanner": "Veracode", "applicationName": "${env.VERACODE_APPLICATION_NAME}"}'
+				echo "Running Security step ..."
+				//snDevOpsSecurityResult securityResultAttributes: '{"scanner": "Veracode", "applicationName": "${env.VERACODE_APPLICATION_NAME}"}'
+				//snDevOpsSecurityResult securityResultAttributes: '{"scanner": "Checkmarx SAST", "projectId": "1076","securityToolId": "58a2681047edc61056978bb4236d431c"}'
 			}
 		}
 		
-		stage('CheckmarxOne Security Scan') {
-			steps {
-				snDevOpsSecurityResult securityResultAttributes: '{"scanner": "Checkmarx One", "projectName": "pramaraju96/ServiceNow-DevOps-Change-Sample", "projectId": "880a8a8e-8627-48b5-9293-4f33a59f0f9c", "securityToolId": "57444f1197d3861015ee71df9153afa7"}'
-				// scanner: Scanning tool and is required e.g. Checkmarx One.
-				// projectName/projectId: Name/Id of your Checkmarx One project and is required. This attribute is applicable only for Checkmarx One.
-				// scanId: Checkmarx One scan id and is optional. This attribute is applicable only for Checkmarx One.
-				// securityToolId: Security tool onboarded in ServiceNow (sys_id of the onboarded security tool) and is optional.
-			}
-		}
-		
-		stage('CheckmarxSAST Security Scan') {
-			steps {
-				snDevOpsSecurityResult securityResultAttributes: '{"scanner": "Checkmarx SAST", "projectId": "1094", "securityToolId": "2662de014757c6109c52ace8736d433f"}'
-				// scanner: Scanning tool and is required e.g. Checkmarx SAST.
-				// projectId: Id of your Checkmarx SAST project and is required. This attribute is applicable only for Checkmarx SAST.
-				// securityToolId: Security tool onboarded in ServiceNow (sys_id of the onboarded security tool) and is optional.
-			}
-		}*/
-/*
-		stage('Register Package') {
-			steps {
-				snDevOpsPackage(
-					configurationName: "DevOps-checkmarx05.service-now.com-1720680378716",
-					name: "${packageName}",
-					artifactsPayload: """
-					{
-					    "artifacts":
-					    [
-					        {
-					            "name": "${artifactname}",
-					            "version": "${version}",
-					            "semanticVersion": "${semanticVersion}",
-					            "repositoryName": "${repoName}"
-					        }
-					    ],
-					    "branchName": "main"
-				}""")
-			}
-		}
-
 	}
 	post{
 		success{
 			script{
 				echo "${releasePipelineName}"
-				build job: "${releasePipelineName}", parameters: [[$class: 'StringParameterValue', name: 'BUILD_NUMBER', value: env.BUILD_NUMBER]]
+				//build job: "${releasePipelineName}"
+				
 			}
 		}
 	}
@@ -142,4 +93,4 @@ def sonarSummaries() {
 			    -Dsonar.projectKey=pramaraju96_ServiceNow-DevOps-Change-Sample'
 		}
 	}
-}*/
+}
