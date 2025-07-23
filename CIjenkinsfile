@@ -43,7 +43,7 @@ pipeline {
 			}
 		}
 
-		stage('Register Artifact') {
+		/*stage('Register Artifact') {
 			steps {
 				echo "RR version -> ${version}"
 				echo "RR semanticVersion -> ${semanticVersion}"
@@ -63,7 +63,7 @@ pipeline {
 				"branchName": "main"
 				}""")
 			}     
-		}
+		}*/
 
 
 		stage('Sonar Scan') {
@@ -73,7 +73,7 @@ pipeline {
 		}
 
 
-		stage('Veracode Security Scan') {
+		/*stage('Veracode Security Scan') {
 			steps {
 				snDevOpsSecurityResult securityResultAttributes: '{"scanner": "Veracode", "applicationName": "${env.VERACODE_APPLICATION_NAME}"}'
 			}
@@ -96,7 +96,7 @@ pipeline {
 				// projectId: Id of your Checkmarx SAST project and is required. This attribute is applicable only for Checkmarx SAST.
 				// securityToolId: Security tool onboarded in ServiceNow (sys_id of the onboarded security tool) and is optional.
 			}
-		}
+		}*/
 /*
 		stage('Register Package') {
 			steps {
